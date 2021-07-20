@@ -7,37 +7,8 @@
 #########################################################################
 #########################################################################
 
-
-##-----------------------------------------------------------------------
 ## PREPARE WORKSPACE
-##-----------------------------------------------------------------------
-
-rm(list = ls())
-options(scipen = 999)
-options(digits = 6)
-getwd()  # should be ~/HIST_HU_URB
-
-
-## LOAD or INSTALL PACKAGES
-packages <- function(x) {
-  x <- deparse(substitute(x))
-  installed_packages <- as.character(installed.packages()[, 1])
-  
-  if (length(intersect(x, installed_packages)) == 0) {
-    install.packages(pkgs = x, dependencies = TRUE, repos = "http://cran.r-project.org")
-  }
-  
-  library(x, character.only = TRUE)
-  rm(installed_packages) # Remove From Workspace
-}
-
-## LOAD NEEDED PACKAGES
-packages(tidyverse)
-packages(tidycensus)  # for getting state/county names/abbrevs.
-packages(foreign)  # for dbf reading/writing
-packages(sf) # for reading gdb
-packages(data.table) # for setnames function
-packages(imputeTS)  # for time series imputation
+source("scripts/00_preamble.R")
 
 
 ###############################################################################
@@ -693,6 +664,28 @@ dr_tdw90 <- temp_tdw1 %>%
   
 ## clean up
 rm(temp_tdw, temp_tdw1)
+
+
+## TDW w/ BGs
+#test <- df_int %>% 
+#  mutate(
+#    pcover_s = sqmi_int/sqmi,
+#    pcover_t = sqmi_int/sqmi_1,
+#    hu_s = pcover_s * hu80, 
+#    hu_t = pcover_t * hu80_1
+#  ) %>% 
+#  group_by(GISJOIN_1, hu80_1) %>% 
+#  mutate(hu_sum = sum(hu_s), hu_s1 = hu_s/hu_sum, hu_new = hu_s1*hu_t) %>% 
+#  summarize(
+#    pcover_s = sum(pcover_s),
+#    pcover_t = sum(pcover_t),
+#    hu_new = sum(hu_new)
+#  ) %>%
+#  mutate(T_JOIN = str_sub(GISJOIN_1, 1, 14)) %>%
+#  group_by(T_JOIN) %>%
+#  summarize_at(vars(hu80_1:hu_new), sum) %>%
+#  arrange(T_JOIN) %>%
+#  print()
 
 
 ##################################################################################################

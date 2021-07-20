@@ -7,30 +7,8 @@
 #########################################################################
 #########################################################################
 
-## prepare workspace
-rm(list = ls())
-options(scipen = 999)
-options(digits = 6)
-getwd()  # should be ~/HIST_HU_URB
-
-## load or install packages
-packages <- function(x) {
-  x <- deparse(substitute(x))
-  installed_packages <- as.character(installed.packages()[, 1])
-  
-  if (length(intersect(x, installed_packages)) == 0) {
-    install.packages(pkgs = x, dependencies = TRUE, repos = "http://cran.r-project.org")
-  }
-  
-  library(x, character.only = TRUE)
-  rm(installed_packages) # Remove From Workspace
-}
-
-## LOAD NEEDED PACKAGSE
-packages(tidyverse)
-packages(foreign)  # for dbf reading/writing
-packages(sf) # for reading gdb
-
+## PREPARE WORKSPACE
+source("scripts/00_preamble.R")
 
 ##################################################################
 ##  STEP 1: LOAD AIRPORT DATA                                   ##

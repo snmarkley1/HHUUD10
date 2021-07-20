@@ -7,38 +7,8 @@
 #########################################################################
 #########################################################################
 
-
-##-----------------------------------------------------------------------
 ## PREPARE WORKSPACE
-##-----------------------------------------------------------------------
-
-rm(list = ls())
-options(scipen = 999)
-options(digits = 6)
-getwd()  # should be ~/HIST_HU_URB
-
-
-## LOAD or INSTALL PACKAGES
-packages <- function(x) {
-  x <- deparse(substitute(x))
-  installed_packages <- as.character(installed.packages()[, 1])
-  
-  if (length(intersect(x, installed_packages)) == 0) {
-    install.packages(pkgs = x, dependencies = TRUE, repos = "http://cran.r-project.org")
-  }
-  
-  library(x, character.only = TRUE)
-  rm(installed_packages) # Remove From Workspace
-}
-
-## LOAD NEEDED PACKAGES
-packages(tidyverse)
-packages(tidycensus)  # for getting state/county names/abbrevs.
-packages(foreign)  # for dbf reading/writing
-packages(sf) # for reading gdb
-#packages(data.table) # for setnames function
-#packages(imputeTS)  # for time series imputation
-
+source("scripts/00_preamble.R")
 
 ###############################################################################
 ##  STEP 1: LOAD HU AND NLCD & SQMI DATA                                     ##
