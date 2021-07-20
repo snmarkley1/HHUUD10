@@ -85,13 +85,15 @@ unzip(zip_file, exdir = "temp", overwrite = TRUE)
 # Unzip shapefiles and put in correct folder (gis_files/tracts)
 for(i in seq(1940, 1980, 10)){
   
-  zip_file2 <- paste0("temp/nhgis",
-                      str_pad(as.character(my_number), 4, pad = "0"),
-                      "_shape/nhgis",
-                      str_pad(as.character(my_number), 4, pad = "0"),
-                      "_shapefile_tl2008_us_tract_",
-                      i,
-                      ".zip")
+  zip_file2 <- paste0(
+    "temp/nhgis",
+    str_pad(as.character(my_number), 4, pad = "0"),
+    "_shape/nhgis",
+    str_pad(as.character(my_number), 4, pad = "0"),
+    "_shapefile_tl2008_us_tract_",
+    i,
+    ".zip"
+    )
   
   unzip(zip_file2, exdir = "gis_files/tracts")
   
