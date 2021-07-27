@@ -8,7 +8,7 @@
 #########################################################################
 
 ## PREPARE WORKSPACE
-source("scripts/00_preamble.R")
+source("D:/HIST_HU_URB/scripts/00_preamble.R")
 
 
 ###############################################################################
@@ -60,7 +60,7 @@ hhuud <- df %>%
 
 ## SAVE!!
 write.dbf(as.data.frame(hhuud), "output/HHUUD.dbf")
-write_csv(hhuudd, "output/HHUUD.csv")
+write_csv(hhuud, "output/HHUUD.csv")
 
 
 
