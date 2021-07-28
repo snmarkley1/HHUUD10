@@ -54,8 +54,10 @@ hhuud <- df %>%
     STATE = state,
     COUNTY = county
   ) %>%
+  # remove "County"
+  mutate(COUNTY = str_replace(COUNTY, " County", "")) %>%
   # reorder
-  select(STATE, COUNTY, GISJOIN10, GEOID10, hu40:UY2) %>%
+  select(STATE, COUNTY, GISJOIN10, GEOID10, hu40:sqmi19, pdev92:UY2) %>%
   print()
 
 ## SAVE!!

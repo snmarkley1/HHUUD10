@@ -45,14 +45,18 @@ arcpy.management.DeleteField('t10_empty', del_fields)
 hhuud = os.path.join(base, "output", "HHUUD.dbf")
 hammer = os.path.join(base, "output", "hammer.dbf")
 
-## Do join and conversion for HHUUD & remove joins
+## Do join and conversion for HHUUD, clean up, and remove joins
 arcpy.management.AddJoin("t10_empty", "GISJOIN", hhuud, "GISJOIN10")
 arcpy.conversion.FeatureClassToFeatureClass("t10_empty", env.workspace, "HHUUD")
+arcpy.management.DeleteField("HHUUD", "GISJOIN;OID_1")
+
 arcpy.management.RemoveJoin('t10_empty', 'HHUUD')
 
-## Do join and conversion for HAMMER
+## Do join and conversion for HAMMER & clean up
 arcpy.management.AddJoin("t10_empty", "GISJOIN", hammer, "GISJOIN10")
 arcpy.conversion.FeatureClassToFeatureClass("t10_empty", env.workspace, "HAMMER")
+arcpy.management.DeleteField("HAMMER", "GISJOIN;OID_1")
+
 
 
 

@@ -155,8 +155,8 @@ nlcd <- u %>%
   mutate(
     UY2 =
       case_when(
-        uy_est > 2019 ~ 2035,  # anything above 2019 goes to 2035
-        between(uy_est, 2015, 2019) ~ 2019, ## set 2019
+        uy_est > 1990 ~ 1990,  # anything above 2019 goes to 2035
+        #between(uy_est, 2015, 2019) ~ 2019, ## set 2019
         TRUE ~ round_any(uy_est, 10)  # round remaining to nearest 10
       )
     ) %>%
@@ -195,8 +195,8 @@ nlcd <- u %>%
   mutate(
     UY3 =
       case_when(
-        uy_est > 2019 ~ 2035,  # anything above 2019 goes to 2035
-        between(uy_est, 2015, 2019) ~ 2019, ## set 2019
+        uy_est > 2000 ~ 2000,  # anything above 2019 goes to 2035
+        #between(uy_est, 2015, 2019) ~ 2019, ## set 2019
         TRUE ~ round_any(uy_est, 10)  # round remaining to nearest 10
       )
   ) %>%
@@ -236,8 +236,8 @@ nlcd <- u %>%
   mutate(
     UY4 =
       case_when(
-        uy_est > 2019 ~ 2035,  # anything above 2019 goes to 2035
-        between(uy_est, 2015, 2019) ~ 2019, ## set 2019
+        uy_est > 2010 ~ 2010,  # anything above 2019 goes to 2035
+        #between(uy_est, 2015, 2019) ~ 2019, ## set 2019
         TRUE ~ round_any(uy_est, 10)  # round remaining to nearest 10
       )
   ) %>%
