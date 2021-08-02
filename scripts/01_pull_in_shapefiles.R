@@ -16,10 +16,10 @@ source("scripts/00_preamble.R")
 ## Create temp folder
 dir.create("temp")
 
-## create gis files folder
+## Create folder for GIS objects & files
 dir.create("gis_files")
 
-## create output folder
+## Create folder for outputs
 dir.create("output")
 
 
