@@ -7,14 +7,21 @@
 #########################################################################
 #########################################################################
 
+## Check working directory
+getwd()  # should be ~/HIST_HU_URB
+
 ## PREPARE WORKSPACE
 source("scripts/00_preamble.R")
 
-## Check Workspace
-getwd()  # D:/HIST_HU_URB
-
 ## Create temp folder
 dir.create("temp")
+
+## create gis files folder
+dir.create("gis_files")
+
+## create output folder
+dir.create("output")
+
 
 ##################################################
 ## SET API KEY and EXPLORE NHGIS SHAPEFILES     ##
