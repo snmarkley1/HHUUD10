@@ -8,7 +8,7 @@
 #########################################################################
 
 ## PREPARE WORKSPACE
-source("D:/HIST_HU_URB/scripts/00_preamble.R")
+source("scripts/00_preamble.R")
 
 ###############################################################################
 ##  STEP 1: LOAD HU AND NLCD & SQMI DATA                                     ##
@@ -17,6 +17,9 @@ source("D:/HIST_HU_URB/scripts/00_preamble.R")
 ##--------------------------
 ## HU DATA
 ##--------------------------
+
+hu4019 <- read_csv("output/hu4019.csv") %>%
+  print()
 
 hu4019_wide <- read_csv("output/hu4019_wide.csv") %>%
   # remove extra columns
