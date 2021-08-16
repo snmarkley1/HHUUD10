@@ -64,6 +64,7 @@ uso_import <- sf::st_read(  # USO: Uncorrected Sparse override
 ) %>%
   as_tibble()
 
+
 ## Clean USO data
 df_uso <- uso_import %>%
   select(GISJOIN:hu80) %>%
@@ -91,7 +92,7 @@ df_uso <- uso_import %>%
 ##------------------------------------------------------------
 ## LOAD YSB 1990 (tracts: ysb90_t) for HAMMER METHOD
 ##------------------------------------------------------------
-ysb90 <- read.dbf("tables/ysb90_t.dbf") %>% 
+ysb90 <- read.dbf("tables/ysb90.dbf") %>% 
   as_tibble() %>% 
   # Make Long
   pivot_longer(
@@ -101,6 +102,10 @@ ysb90 <- read.dbf("tables/ysb90_t.dbf") %>%
   ) %>%
   mutate(yr = as.integer(paste0("19", str_extract(yr, "\\d+")))) %>%
   filter(yr != 1990) %>%
+  ## turn into tracts
+  mutate(GISJOIN = str_sub(GISJOIN, 1, 14)) %>%
+  group_by(GISJOIN, yr) %>%
+  summarize(hu_ysb = sum(hu_ysb, na.rm = TRUE)) %>%
   print()  # n = 362,695
 
 
@@ -281,7 +286,7 @@ rm(list = setdiff(ls(), c("df_int", "dr_cmr", "packages", "ysb90")))
 flag_aw <- df_int %>%
   # flag suspicious atoms --> NA or false zero in source tracts
   filter(
-    (hu < 10 & hu_1 > 10 & hu_2 > 10) |
+    (hu < 1 & hu_1 > 10 & hu_2 > 10) |
       is.na(hu)  # remove NAs from source years
   ) %>%
   # group by GEOID and year
@@ -297,9 +302,9 @@ flag_aw <- df_int %>%
 flag_tdw <- df_int %>%
   # flag suspicious atoms --> NA or false zero in source or pseudo-target tracts
   filter(
-    (hu < 10 & hu_1 > 10 & hu_2 > 10) |  # suspicious hu
-      (hu > 10 & hu_1 < 10 & hu_2 > 10) |  # suspicious hu_1
-      (hu > 10 & hu_1 < 10 & yr == 1980) |  # grab 1980 special problems (hu_1 & hu_2 are same)
+    (hu < 1 & hu_1 > 10 & hu_2 > 10) |  # suspicious hu
+      (hu > 10 & hu_1 < 1 & hu_2 > 10) |  # suspicious hu_1
+      (hu > 10 & hu_1 < 1 & yr == 1980) |  # grab 1980 special problems (hu_1 & hu_2 are same)
       is.na(hu) |  # remove NAs from source years
       is.na(hu_1)  # remove NAs from pseudo-target years
   ) %>%
@@ -316,7 +321,7 @@ flag_tdw <- df_int %>%
 flag_tdw90 <- df_int %>%
   # flag suspicious atoms --> NA or false zero in source or target tracts
   filter(
-    (hu < 10 & hu_1 > 10 & hu_2 > 10) |  # suspicious hu
+    (hu < 1 & hu_1 > 10 & hu_2 > 10) |  # suspicious hu
       (hu > 0 & hu_2 == 0) |  # 1990 HUs are zeroes (taken care of in sparse override)
       is.na(hu) |  # remove NAs from source years
       is.na(hu_2)  # remove NAs from target years
@@ -389,12 +394,12 @@ dr_aw <- temp_aw %>%
   # rename to match previous
   rename(GISJOIN10 = JOIN_T)  %>%
   left_join(ysb90, by = c("GISJOIN10" = "GISJOIN", "yr")) %>%
-  # catch and remove cases where AW est. is less than raw YSB estimate
-  filter(hu_aw >= hu_ysb) %>%
+  # catch and remove cases where AW est. is less than 90% of raw YSB estimate
+  filter(hu_aw >= 0.9 * hu_ysb) %>%
   # organize columns/remove pcover
   select(GISJOIN10, yr, hu_aw) %>%
   arrange(GISJOIN10, yr) %>%
-  print()  # n = 55,499
+  print()  # n = 62,998
   
 
 ## Clean up
@@ -461,11 +466,11 @@ dr_tdw <- df_int %>%
   rename(GISJOIN10 = JOIN_T) %>%
   # add YSB data in for filtering
   left_join(ysb90, by = c("GISJOIN10" = "GISJOIN", "yr")) %>%
-  # remove cases where TDW estimate is less than YSB estimate
-  filter(hu_tdw >= hu_ysb) %>%
+  # remove cases where TDW estimate is less than 90% of YSB estimate
+  filter(hu_tdw >= 0.9 * hu_ysb) %>%
   # clean up
   select(GISJOIN10, yr, hu_tdw) %>%
-  print() # n = 65,558
+  print() # n = 99,066
 
 
 ## Clean up
@@ -540,11 +545,12 @@ dr_tdw90 <- temp_tdw1 %>%
   rename(GISJOIN10 = JOIN_T) %>%
   # Get ysb data for corrections
   left_join(ysb90, by = c("GISJOIN10" = "GISJOIN", "yr")) %>%
-  filter(hu_tdw90 >= hu_ysb) %>%
+  # keep only those at least 90% or more of ysb
+  filter(hu_tdw90 >= 0.9 * hu_ysb) %>%
   # organize
   select(GISJOIN10, yr, hu_tdw90) %>%
   ungroup() %>%
-  print()  # n = 144,268
+  print()  # n = 162,761
   
 ## clean up
 rm(temp_tdw, temp_tdw1, flag_tdw90)
@@ -556,8 +562,10 @@ rm(temp_tdw, temp_tdw1, flag_tdw90)
 ##################################################################################################
 ##################################################################################################
 
+##---------------------------------------------------------------------
 ## JOIN ALL
-hu4080 <- dr_cmr %>%  # MAX. REABS. & SPARSE
+##---------------------------------------------------------------------
+hu4080_prep <- dr_cmr %>%  # MAX. REABS. & SPARSE
   # AREAL WEIGHTING
   left_join(dr_aw, by = c("GISJOIN" = "GISJOIN10", "yr")) %>%
   # TARGET-DENSITY WEIGHTING - SINGLE DECADE
@@ -601,7 +609,7 @@ hu4080 <- dr_cmr %>%  # MAX. REABS. & SPARSE
   # final cleaning
   mutate(
     method = ifelse(method == "USO", "CSO", method),  # correct method names
-    method = ifelse(method == "UDO", "CDO", method),  # correct method names
+    #method = ifelse(method == "UDO", "CHM", method),  # correct method names
     hu_est_cmr = ifelse(is.na(hu_est_cmr), 0, hu_est_cmr),  # replace NAs
     hu_est_ham = ifelse(is.na(hu_est_ham), 0, hu_est_ham)  # replace NAs
   ) %>%
@@ -611,6 +619,57 @@ hu4080 <- dr_cmr %>%  # MAX. REABS. & SPARSE
   print()  # n = 362,695
 
 
+##-----------------------------------------------------------------------------------------
+## MAKE ADJUSTMENTS to SUSPICIOUS CASES (hu_est_cmr < 0.9 * hu_ysb)
+##-----------------------------------------------------------------------------------------
+hu4080 <- hu4080_prep %>%
+  # cases where the HU estimate less than 90% of the YSB value
+  mutate(flag = ifelse(hu_est_cmr < 0.9 * hu_ysb, 1, 0)) %>%
+  # fix CSO casese
+  # mutate(
+  #   hu_est_cmr = ifelse(flag == 1 & method == "CSO", hu_ysb, hu_est_cmr),  # Sub in YSB values
+  #   method = ifelse(flag == 1 & method == "CSO", "YSB", method)  # change method name to "YSB"
+  # ) %>%
+  # fix up CMR cases
+  mutate(
+    hu_new = 
+      case_when(
+        flag == 1 & method == "CMR" & abs(hu_mr - hu_ysb) < abs(hu_ham - hu_ysb) ~ hu_mr,  # add in MR estimates when it is closer to YSB than HM
+        flag == 1 & method == "CMR" & abs(hu_mr - hu_ysb) >= abs(hu_ham - hu_ysb) ~ hu_ham,   # add in HM estmates when is is closer to YSB than MR 
+        TRUE ~ hu_est_cmr
+      )
+  ) %>%
+  ## Reallocate CMR values in counties w/ flag changes above: start by getting difference in new HU and old HU
+  mutate(diff = hu_new - hu_est_cmr) %>%
+  # group by county and year to get total tracts in need of adjustment
+  group_by(CO_CALC, yr) %>%
+  mutate(
+    diff_tot = sum(diff),  # get sum of differences by county & year
+    n = n(),  # get total tract number by county and year
+    tracts = length(subset(n, method == "CMR" & flag != 1))  # get eligible tract total in need of readjustment (CMR & not flagged)
+    ) %>%
+  ungroup() %>%
+  mutate(
+    adj = ifelse(flag != 1 & method == "CMR", diff_tot/tracts, 0),  # calculate adjustment factor for eligible tract-years
+    hu_new2 = hu_new - adj,  # make adjustment
+    hu_new3 = ifelse(hu_new2 < hu_ysb & flag != 1 & method == "CMR", hu_est_cmr, hu_new2)  # override cases where adjustment goes too far (puts new HU < YSB)
+    ) %>%
+  ## Clean up
+  mutate(hu_est_cmr = hu_new3) %>%
+  # change method names
+  mutate(
+    method = 
+      case_when(
+       flag == 1 & method == "CMR" & abs(hu_mr - hu_ysb) < abs(hu_ham - hu_ysb) ~ "UMR",  # UMR: Un-adjusted Max. Reabsorption.
+        flag == 1 & method == "CMR" & abs(hu_mr - hu_ysb) >= abs(hu_ham - hu_ysb) ~ "CHM",  # County-based Hammer method
+        TRUE ~ method
+      )
+  ) %>%
+  select(STATE:hu_est_ham) %>%
+  #mutate(SPARSE = ifelse(method %in% c("YSB", "CSO"), 1, 0)) %>%
+  print()
+
+
 ## CHECK DISTRIBUTION of METHODS
 hu4080 %>%
   group_by(method) %>%
@@ -618,15 +677,19 @@ hu4080 %>%
   arrange(-n)
 
 #method      n
-# CMR    212,175
-# TDW-90  56,930
-# AW      55,499
-# TDW-1   34,596
-# CSO      4,495
+# CMR    184,212
+# AW      62,998
+# TDW-90  61,038
+# TDW-1   39,485
+# UMR     10,004
+# CSO      3,049
+# YSB      1,446
+# CHM        463  # Actually same as 
 
 
 ## SAVE OUT
 write_csv(hu4080, "output/hu4080.csv")
+
 
 ##################################################################################################
 ##################################################################################################
@@ -694,9 +757,9 @@ ts_prep <- hu4019_prep %>%
   group_by(CO_CALC, yr) %>%
   mutate(
     n_tracts = n(),  # total tracts in a county-year
-    p_mr = sum(str_detect(method, "CMR|CSO|CDO")) / n_tracts,  # % of tracts in a county-year that are MR, SO, or DO tracts
-    vect_sum = sum(hu_est[!method %in% c("CMR", "CSO", "CDO")]),  # sum of vector-calc. HU in county
-    vect_sum_ham = sum(hu_est_ham[!method %in% c("CMR", "CSO", "CDO")]),  # sum of vector-calc. HU in county
+    p_mr = sum(str_detect(method, "CMR")) / n_tracts,  # % of tracts in a county-year that are MR, SO, or DO tracts
+    vect_sum = sum(hu_est[!method %in% c("CMR")]),  # sum of vector-calc. HU in county
+    vect_sum_ham = sum(hu_est_ham[!method %in% c("CMR")]),  # sum of vector-calc. HU in county
     hu_co_minus = hu_co - vect_sum,
     hu_co_minus_ham = hu_co - vect_sum_ham,
     hu_tmr = hu_cmr / sum(hu_cmr) * hu_co_minus,  # tmr = "tract adjusted max. reabsorption
@@ -706,13 +769,13 @@ ts_prep <- hu4019_prep %>%
   ) %>%
   ungroup() %>%
   mutate(
-    hu_est2 = ifelse(method %in% c("CMR", "CSO", "CDO") & hu_tmr >= 0 & !is.na(hu_tmr), hu_tmr, hu_est),  # select tract-imputed values for CMR, CSO, & CDO tracts & remove TMRs that come back negative
-    hu_est2_ham = ifelse(method %in% c("CMR", "CSO", "CDO") & hu_tham >= 0 & !is.na(hu_tham), hu_tham, hu_est_ham),
+    hu_est2 = ifelse(method %in% c("CMR") & hu_tmr > 0 & !is.na(hu_tmr), hu_tmr, hu_est),  # select tract-imputed values for CMR, CSO, & CHM tracts & remove TMRs that come back negative
+    hu_est2_ham = ifelse(method %in% c("CMR") & hu_tham > 0 & !is.na(hu_tham), hu_tham, hu_est_ham),
     #hu_est2 = ifelse(hu_tmr < 0, hu_est, hu_est2),  # change any negatives to Modified MR
     #hu_diff = abs((hu_est2) - (hu_est2 + hu_est)/2)/((hu_est2 + hu_est)/2) * 100,  # get HU median difference bw hu_est2 & hu_est
-    ts_ind = ifelse(p_mr > 0 & p_mr < 1, 1, 0),  # indicate tracts in counties with at least 1 tract-year containing a CMR, CSO, or CDO tract (as long as not all in county are CMR or CSO)
-    hu_ts = ifelse(ts_ind == 1 & method %in% c("CMR", "CSO", "CDO") & hu_tmr >= 0 & !is.na(hu_tmr), NA, hu_est2),  # time series estimator --> do only for CMR,CSO,CDO tracts in county-decade w/ < 100% CMR,CSO,CDO tracts
-    hu_ts_ham = ifelse(ts_ind == 1 & method %in% c("CMR", "CSO", "CDO") & hu_tham >= 0 & !is.na(hu_tham), NA, hu_est2_ham),
+    ts_ind = ifelse(p_mr > 0 & p_mr < 1, 1, 0),  # indicate tracts in counties with at least 1 tract-year containing a CMR, CSO, or CHM tract (as long as not all in county are CMR or CSO)
+    hu_ts = ifelse(ts_ind == 1 & method %in% c("CMR") & hu_tmr > 0 & !is.na(hu_tmr), NA, hu_est2),  # time series estimator --> do only for CMR,CSO,CHM tracts in county-decade w/ < 100% CMR,CSO,CHM tracts
+    hu_ts_ham = ifelse(ts_ind == 1 & method %in% c("CMR") & hu_tham > 0 & !is.na(hu_tham), NA, hu_est2_ham),
     ts_ind = ifelse(is.na(hu_ts), 1, 0)  # for determining number of imputations needed by tract across 5 decades
     ) %>%
   group_by(GISJOIN10) %>%
@@ -736,6 +799,28 @@ ts_prep <- hu4019_prep %>%
 
 ## Do Kalman Smoothing to generate HU estimate from temporal trend --> takes awhile
 ts_prep1 <- ts_prep %>%
+  # Imputing 1940 values to allow for Kalman smoothing
+  mutate(
+    method = 
+      case_when(
+        is.na(hu_ts) & yr == 1940 & abs(hu_est_cmr - hu_ham) <= abs(hu_tmr - hu_ham) ~ "CMR",  ## chose one closer to hu_ham
+        is.na(hu_ts) & yr == 1940 & abs(hu_est_cmr - hu_ham) > abs(hu_tmr - hu_ham) ~ "TMR",
+        TRUE ~ method
+      ),
+    hu_ts = 
+      case_when(
+        is.na(hu_ts) & yr == 1940 & abs(hu_est_cmr - hu_ham) <= abs(hu_tmr - hu_ham) ~ hu_est_cmr,  ## chose one closer to hu_ham
+        is.na(hu_ts) & yr == 1940 & abs(hu_est_cmr - hu_ham) > abs(hu_tmr - hu_ham) ~ hu_tmr,
+        TRUE ~ hu_ts
+      ),
+    # fix ham estimates
+    hu_ts_ham = 
+      case_when(
+        is.na(hu_ts_ham) & yr == 1940 & abs(hu_est_ham - hu_ts) <= abs(hu_tham - hu_ts) ~ hu_est_ham,
+        is.na(hu_ts_ham) & yr == 1940 & abs(hu_est_ham - hu_ts) > abs(hu_tham - hu_ts) ~ hu_tham,
+        TRUE ~ hu_ts_ham
+      ),
+    ) %>%
   group_by(GISJOIN10) %>%
   # for avoiding errors
   mutate(
@@ -750,8 +835,8 @@ ts_prep1 <- ts_prep %>%
       ifelse(
         sum_chk > 0,  # will spit Error if not specified --> replace zeros w/ hu_est2
         na_kalman(  # replace NAs w/ imputed values
-          hu_ts,  # run using hu_ts column
-          model = "StructTS",  # specifies model to use
+          hu_ts,
+          model = "StructTS",
           smooth = TRUE
           ),
         hu_est2
@@ -781,32 +866,34 @@ ts_prep1 <- ts_prep %>%
 ##------------------------------------------------------------------------------
 
 ts_prep2 <- ts_prep1 %>%
-  # keep only eligible tracts --> CMR or CSO tracts in county-years w/ at least some vector-based estimates
+  # keep only eligible tracts --> CMR tracts in county-years w/ at least some vector-based estimates
   filter(ts_ind == 1) %>%
   mutate(
-    hu_diff_cmr = abs(hu_cmr - (hu_cmr + hu_impute)/2), # calc. diff. bw CMR est. & linear interp. est.
-    hu_diff_ham = abs(hu_ham - (hu_ham + hu_impute_ham)/2),
-    hu_diff_tmr = abs(hu_tmr - (hu_tmr + hu_impute)/2),  # calc. diff. bw TMR est. & linear interp. est.
-    hu_diff_tham = abs(hu_tham - (hu_tham + hu_impute_ham)/2),
-    hu_est3 = ifelse(hu_diff_cmr < hu_diff_tmr, hu_cmr, hu_tmr),
-    hu_est3_ham = ifelse(hu_diff_ham < hu_diff_tham, hu_ham, hu_tham),
+    hu_diff_cmr = abs(hu_est_cmr - (hu_est_cmr + hu_impute)/2), # calc. diff. bw CMR est. & kalman interp. est.
+    hu_diff_ham = abs(hu_est_ham - (hu_est_ham + hu_impute_ham)/2),  # calc. diff bw CHM est. & kalman interp. est.
+    hu_diff_tmr = abs(hu_tmr - (hu_tmr + hu_impute)/2),  # calc. diff. bw TMR est. & kalman interp. est.
+    hu_diff_tham = abs(hu_tham - (hu_tham + hu_impute_ham)/2),  # calc. diff bw THM est. & kalman interp. est.
+    hu_est3 = ifelse(hu_diff_tmr < hu_diff_cmr & method == "CMR" & hu_tmr > 0.9 * hu_ysb, hu_tmr, hu_est_cmr),  # choose method with smaller distance
+    hu_est3_ham = ifelse(hu_diff_tham < hu_diff_ham & hu_tham > 0.9 * hu_ysb, hu_tham, hu_est_ham),
+    
     method2 = 
       case_when(  # new method
         hu_diff_cmr < hu_diff_tmr & method == "CMR" ~ "CMR",  # stick w/ CMR when diff bw CMR & TS < diff bw TMR & TS
-        hu_diff_cmr < hu_diff_tmr & method == "CSO" ~ "CSO",  # stick w/ CSO when diff bw CSO & TS < diff bw TSO & TS
-        hu_diff_cmr < hu_diff_tmr & method == "CDO" ~ "CDO",  # stick w/ CDO when diff bw CDO & TS < diff bw TDO & TS
+        #hu_diff_cmr < hu_diff_tmr & method == "CSO" ~ "CSO",  # stick w/ CSO when diff bw CSO & TS < diff bw TSO & TS
+        hu_diff_cmr < hu_diff_tmr & method == "CHM" ~ "CHM",  # stick w/ CHM when diff bw CHM & TS < diff bw TDO & TS
         hu_diff_cmr >= hu_diff_tmr & method == "CMR" ~ "TMR",  # go w/ TMR
-        hu_diff_cmr >= hu_diff_tmr & method == "CSO" ~ "TSO",  # go w/ TSO
-        hu_diff_cmr >= hu_diff_tmr & method == "CDO" ~ "TDO"  # go w/ TDO
+        #hu_diff_cmr >= hu_diff_tmr & method == "CSO" ~ "CSO",  # go w/ TSO --> no need to adjust this one
+        hu_diff_cmr >= hu_diff_tmr & method == "CHM" ~ "CHM",  # go w/ TDO -- > keep it as CHM (no need to do THM)
+        TRUE ~ method
     ),
     method_ham =
       case_when(  # new method
         hu_diff_ham < hu_diff_tham & method == "CMR" ~ "C-HAM",  # stick w/ CMR when diff bw CMR & TS < diff bw TMR & TS
-        hu_diff_ham < hu_diff_tham & method == "CSO" ~ "CSO",  # stick w/ CSO when diff bw CSO & TS < diff bw TSO & TS
-        hu_diff_ham < hu_diff_tham & method == "CDO" ~ "CDO",  # stick w/ CDO when diff bw CDO & TS < diff bw TDO & TS
+        #hu_diff_ham < hu_diff_tham & method == "CSO" ~ "CSO",  # stick w/ CSO when diff bw CSO & TS < diff bw TSO & TS
+        hu_diff_ham < hu_diff_tham & method == "CHM" ~ "CHM",  # stick w/ CHM when diff bw CHM & TS < diff bw TDO & TS
         hu_diff_ham >= hu_diff_tham & method == "CMR" ~ "T-HAM",  # go w/ TMR
-        hu_diff_ham >= hu_diff_tham & method == "CSO" ~ "TSO",  # go w/ TSO
-        hu_diff_ham >= hu_diff_tham & method == "CDO" ~ "TDO"  # go w/ TDO
+        #hu_diff_ham >= hu_diff_tham & method == "CSO" ~ "CSO",  # go w/ TSO  --> keep as CSO
+        hu_diff_ham >= hu_diff_tham & method == "CHM" ~ "THM"  # go w/ TDO
       ),
   ) %>%
   # clean up
@@ -821,7 +908,9 @@ ts_prep2 %>% group_by(method2) %>%
 
 
 ##################################################################################################
-###  STEP 12: JOIN ts_prep2 BACK w/ hu4019_prep and SAVE                                      ##
+##################################################################################################
+###  STEP 12: JOIN ts_prep2 BACK w/ hu4019_prep and SAVE                                        ##
+##################################################################################################
 ##################################################################################################
 
 ## JOIN
@@ -833,6 +922,8 @@ hu4019_prep2 <- hu4019_prep %>%
     method = ifelse(is.na(method2), method, method2),  # replace old method with new one from imputation
     method_ham = ifelse(is.na(method_ham), method, method_ham),
     method_ham = ifelse(method_ham == "CMR", "C-HAM", method_ham),
+    method_ham = ifelse(method_ham == "C-HAM", "CHM", method_ham),
+    method_ham = ifelse(method_ham == "T-HAM", "THM", method_ham),
     hu_est = ifelse(is.na(hu_est3), hu_est, hu_est3),  # replace old HU estimate with new one from imputation
     hu_est_ham = ifelse(is.na(hu_est3_ham), hu_est_ham, hu_est3_ham)
   ) %>%
@@ -851,30 +942,37 @@ hu4019_prep2 <- hu4019_prep %>%
   print()  # n = 652,851 (72,539 tracts estimated)
 
 
-## CHECK METHOD COUNTS
-hu4019_prep2 %>%
-  group_by(METHOD) %>%
-  count() %>%
-  arrange(-n)
-
-hu4019_prep2 %>%
-  group_by(METHOD_HAM) %>%
-  count() %>%
-  arrange(-n)
-
-
-## FINISH UP
+##--------------------------------------------------------
+## FINISH UP ORGANZING --> Add YSB, HAM, & SPARSE DATA
+##--------------------------------------------------------
 hu4019 <- hu4019_prep2 %>%
-  left_join(hu4080[c(4,5,10)], by = c("GISJOIN10", "YEAR" = "yr")) %>%
+  left_join(hu4080[c(4,5,8,10)], by = c("GISJOIN10", "YEAR" = "yr")) %>%
   # Hammer override
-  rename(HU_HAM_O = hu_ham) %>%
+  rename(
+    HU_HAM_O = hu_ham,
+    HU_YSB = hu_ysb
+    ) %>%
   mutate(
     HU = ifelse(is.na(HU), 0, HU),  # Checked --> No HUs in these 25 tract-decades (5 tracts)
     HU_HAM = ifelse(is.na(HU_HAM), 0, HU_HAM),  # Checked --> No HUs in these 25 tract-decades (5 tracts)
     HU_HAM_O = ifelse(is.na(HU_HAM_O), HU_HAM, HU_HAM_O),
-    HU_HAM_O = ifelse(METHOD_HAM == "T-HAM", HU_HAM, HU_HAM_O)
+    HU_HAM_O = ifelse(METHOD_HAM == "THM", HU_HAM, HU_HAM_O),
     ) %>%
+  # fix NAs
+  mutate(HU_YSB = ifelse(is.na(HU_YSB), HU, HU_YSB)) %>%
+  ## fix CSOs
+  mutate(
+    HU = ifelse(METHOD == "CSO" & HU < 0.9 * HU_YSB, HU_HAM, HU),
+    METHOD = ifelse(METHOD == "CSO" & HU < 0.9 * HU_YSB, "CHM-S", METHOD)
+  ) %>%
   print()
+
+
+## CHECK METHOD COUNTS
+hu4019 %>%
+  group_by(METHOD) %>%
+  count() %>%
+  arrange(-n)
 
 
 ##################################################################################################
@@ -892,7 +990,7 @@ hu4019_wide_prep <- hu4019 %>%
   # change up year for widening
   mutate(YEAR = str_sub(YEAR, 3, 4)) %>% 
   # keep only 
-  select(-METHOD, -METHOD_HAM, -HU_HAM, -HU_HAM_O) %>% 
+  select(-METHOD, -METHOD_HAM, -HU_HAM, -HU_HAM_O, -HU_YSB) %>% 
   pivot_wider(
     names_from = YEAR, 
     names_prefix = "hu", # set up colnames
@@ -907,7 +1005,7 @@ hu4019_wide_prep <- hu4019 %>%
 hu4019_method <- hu4019 %>%
   mutate(YEAR = str_sub(YEAR, 3, 4)) %>% 
   # keep only 
-  select(-HU, -HU_HAM, -METHOD_HAM, -HU_HAM_O) %>% 
+  select(-HU, -HU_HAM, -METHOD_HAM, -HU_HAM_O, -HU_YSB) %>% 
   pivot_wider(
     names_from = YEAR, 
     names_prefix = "m", # set up colnames
@@ -918,13 +1016,14 @@ hu4019_method <- hu4019 %>%
   select(-c(m90:m19)) %>%
   print()  # n = 72,539
 
+
 ## HAM
 hu4019_ham <- hu4019 %>%
   mutate(
     #HU_HAM_O = ifelse(METHOD_HAM == "T-HAM", HU_HAM, HU_HAM_O),  # replace w/ T-HAM
     YEAR = str_sub(YEAR, 3, 4)
     ) %>%
-  select(-c(METHOD:HU_HAM)) %>%
+  select(-c(METHOD:HU_HAM, HU_YSB)) %>%
   pivot_wider(
     names_from = YEAR, 
     names_prefix = "ham", # set up colnames
@@ -951,3 +1050,55 @@ write_csv(hu4019, "output/hu4019.csv")
 ## Clear workspace
 rm(list = setdiff(ls(), c("hu4019", "hu4019_wide", "hu4080")))
 
+
+
+
+##################################################################################################
+##################################################################################################
+###  QUICK QUALITY CHECK  --> County comparison                                                 ##
+##################################################################################################
+##################################################################################################
+
+
+## REIMPORT COUNTY DATA
+county_tracts <- read_csv("tables/county_tracts.csv") %>%
+  mutate(
+    CO_CALC = JOIN_CO,  # includes aggregated counties (border changes)
+    #CO_JOIN = substr(GISJOIN, 1, 8)  # for joining
+  ) %>%
+  select(STATE, COUNTY, GISJOIN, CO_CALC, hu40co:hu80co) %>%
+  print()
+
+## MAKE LONG
+counties_long <- county_tracts %>%
+  # make long
+  pivot_longer(
+    cols = hu40co:hu80co,
+    names_to = "yr",
+    values_to = "hu_co"
+  ) %>%
+  # fix formating for "yr" column
+  mutate(yr = as.integer(paste0("19", str_extract(yr, "\\d+")))) %>%
+  print()
+
+## CHECK COuNTY HU DISCREPANCIES
+chk <- hu4019 %>% 
+  left_join(counties_long, by = c("GISJOIN10" = "GISJOIN", "YEAR" = "yr")) %>% 
+  group_by(STATE, COUNTY, CO_CALC, YEAR, hu_co) %>% 
+  summarize(HU = sum(HU)) %>% 
+  mutate(DIFF = (HU - (hu_co + HU)/2) / (hu_co + HU)/2) %>% 
+  print()
+
+
+## Look at spread
+chk %>% 
+  filter(YEAR < 1990) %>% 
+  group_by(YEAR) %>% 
+  summarize(
+    MEANDIFF = mean(DIFF, na.rm = T), 
+    SD_DIFF = sd(DIFF, na.rm = T)
+    )
+
+
+## Look at spread pt 2
+quantile(chk$DIFF, na.rm = T, seq(0, 1, 0.01))

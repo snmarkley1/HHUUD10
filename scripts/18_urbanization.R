@@ -164,7 +164,7 @@ nlcd <- u %>%
       )
     ) %>%
   select(-uy_est) %>%
-  print()
+  print()  # n = 388
 
 ## Join back in w/ group
 urb2 <- urb1 %>%
@@ -204,7 +204,7 @@ nlcd <- u %>%
       )
   ) %>%
   select(-uy_est) %>%
-  print()
+  print()  # n = 286
 
 
 ## Join back in w/ group
@@ -245,7 +245,7 @@ nlcd <- u %>%
       )
   ) %>%
   select(-uy_est) %>%
-  print()
+  print()  # n = 44
 
 
 ## Join back in w/ group
@@ -274,22 +274,29 @@ smooth <- u %>%
   left_join(u, by = c("nbr_GISJOIN" = "GISJOIN10"), suffix = c("", "_nbr")) %>%
   # ID tracts surrounded by tracts w/ lower UY4s
   group_by(GISJOIN10) %>%
-  mutate(UY4_nbr_hi = max(UY4_nbr)) %>%
-  # Keep only those
-  filter(UY4 > UY4_nbr_hi) %>%
+  mutate(
+    UY4_nbr_hi = max(UY4_nbr),
+    n = n()
+    ) %>%
+  # Keep only those surrounded by higher UY1's & w/ >1 neighbor
+  filter(UY4 > UY4_nbr_hi & n > 1) %>%
   # Generate UY4_nbr mean
-  summarize(uy_est = weighted.mean(UY4_nbr, WEIGHT)) %>%
+  summarize(
+    #uy_est = weighted.mean(UY4_nbr, WEIGHT),
+    uy_est = max(UY4_nbr)  ## choose latest UY
+    ) %>%
   # Establish UY
   mutate(
-    UY5 =
-      case_when(
-        uy_est > 2019 ~ 2035,  # anything above 2019 goes to 2035
-        between(uy_est, 2015, 2019) ~ 2019, ## set 2019
-        TRUE ~ round_any(uy_est, 10)  # round remaining to nearest 10
-      )
+    # UY5 =
+    #   case_when(
+    #     uy_est > 2019 ~ 2035,  # anything above 2019 goes to 2035
+    #     between(uy_est, 2015, 2019) ~ 2019, ## set 2019
+    #     TRUE ~ round_any(uy_est, 10)  # round remaining to nearest 10
+    #   )
+    UY5 = uy_est
   ) %>%
   select(-uy_est) %>%
-  print()  # n = 731
+  print()  # n = 650
 
 
 ## Join back in w/ group
