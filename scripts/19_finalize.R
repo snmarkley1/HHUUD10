@@ -10,6 +10,8 @@
 ## PREPARE WORKSPACE
 source("scripts/00_preamble.R")
 
+## Create DATA_DOWNLOAD folder
+dir.create("DATA_DOWNLOAD")
 
 ###############################################################################
 ##  STEP 1: LOAD & CLEAN DATA                                                ##
@@ -62,12 +64,45 @@ hhuud <- df %>%
 
 ## SAVE!!
 write.dbf(as.data.frame(hhuud), "output/HHUUD.dbf")
-write_csv(hhuud, "output/HHUUD.csv")
-
+write_csv(hhuud, "DATA_DOWNLOAD/HHUUD10.csv")
 
 
 ###############################################################################
-##  STEP 3: PREPARE HAMMER DATA for COMPARISON                               ##
+##  STEP 3: MAKE LONG                                                        ##
+###############################################################################
+
+hhuud_long <- hhuud %>%
+  # Make HU long
+  pivot_longer(
+    cols = hu40:hu19,
+    names_to = "YEAR",
+    values_to = "HU"
+  ) %>%
+  # Make Sq. mi. long
+  pivot_longer(
+     cols = sqmi40:sqmi19,
+     names_to = "YEAR_SQMI",
+     values_to = "SQMI"
+   ) %>%
+  # organize
+  select(STATE:GEOID10, YEAR, HU, SQMI, pdev92:UY2) %>%
+  # make distinct column to drop duplicates
+  mutate(ID = paste0(GISJOIN10, YEAR)) %>%
+  distinct(ID, .keep_all = TRUE) %>%
+  select(-ID) %>%
+  # fix YEAR column
+  mutate(
+    YEAR = as.integer(str_extract(YEAR, "\\d+")),
+    YEAR = ifelse(between(YEAR, 40, 90), as.integer(paste0("19", YEAR)), as.integer(paste0("20", str_pad(YEAR, 2, "left", "0"))))
+    ) %>%
+  print()
+
+## SAVE!!
+write_csv(hhuud_long, "DATA_DOWNLOAD/HHUUD10_long.csv")
+
+
+###############################################################################
+##  STEP 4: PREPARE HAMMER DATA for COMPARISON                               ##
 ###############################################################################
 
 ## load t10 to get sqmi

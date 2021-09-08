@@ -73,6 +73,7 @@ sqmi <- left_join(hu4019_wide, t10, by = "GISJOIN10") %>%
   mutate(yr = str_extract(yr, "\\d+")) %>%
   print()
 
+
 ## GET HU/SQMI
 hu_sqmi <- left_join(hu, sqmi, by = c("GISJOIN10", "yr")) %>%
   mutate(hu_sqmi = hu/sqmi) %>%
@@ -287,12 +288,6 @@ smooth <- u %>%
     ) %>%
   # Establish UY
   mutate(
-    # UY5 =
-    #   case_when(
-    #     uy_est > 2019 ~ 2035,  # anything above 2019 goes to 2035
-    #     between(uy_est, 2015, 2019) ~ 2019, ## set 2019
-    #     TRUE ~ round_any(uy_est, 10)  # round remaining to nearest 10
-    #   )
     UY5 = uy_est
   ) %>%
   select(-uy_est) %>%

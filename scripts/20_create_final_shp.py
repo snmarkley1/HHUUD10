@@ -43,21 +43,34 @@ arcpy.management.DeleteField('t10_empty', del_fields)
 
 ## Grab tables
 hhuud = os.path.join(base, "output", "HHUUD.dbf")
-hammer = os.path.join(base, "output", "hammer.dbf")
+#hammer = os.path.join(base, "output", "hammer.dbf")
+
+## Create gdb in folder
+arcpy.management.CreateFileGDB(os.path.join(base, "DATA_DOWNLOAD"), "HHUUD10.gdb")
+output_gdb = os.path.join(base, "DATA_DOWNLOAD", "HHUUD10.gdb")
 
 ## Do join and conversion for HHUUD, clean up, and remove joins
 arcpy.management.AddJoin("t10_empty", "GISJOIN", hhuud, "GISJOIN10")
-arcpy.conversion.FeatureClassToFeatureClass("t10_empty", env.workspace, "HHUUD")
-arcpy.management.DeleteField("HHUUD", "GISJOIN;OID_1")
+arcpy.conversion.FeatureClassToFeatureClass("t10_empty", output_gdb, "HHUUD10")
+arcpy.management.DeleteField("HHUUD10", "GISJOIN;OID_1")
 
 arcpy.management.RemoveJoin('t10_empty', 'HHUUD')
 
 ## Do join and conversion for HAMMER & clean up
-arcpy.management.AddJoin("t10_empty", "GISJOIN", hammer, "GISJOIN10")
-arcpy.conversion.FeatureClassToFeatureClass("t10_empty", env.workspace, "HAMMER")
-arcpy.management.DeleteField("HAMMER", "GISJOIN;OID_1")
+#arcpy.management.AddJoin("t10_empty", "GISJOIN", hammer, "GISJOIN10")
+#arcpy.conversion.FeatureClassToFeatureClass("t10_empty", env.workspace, "HAMMER")
+#arcpy.management.DeleteField("HAMMER", "GISJOIN;OID_1")
 
 
+###############################################################################
+## Convert to GeoJSON File
+###############################################################################
 
-
-
+arcpy.conversion.FeaturesToJSON("HHUUD10", 
+                                os.path.join(base, "DATA_DOWNLOAD", "HHUUD10.geojson"), 
+                                "NOT_FORMATTED", 
+                                "NO_Z_VALUES", 
+                                "NO_M_VALUES", 
+                                "GEOJSON", 
+                                "KEEP_INPUT_SR", 
+                                "USE_FIELD_NAME")

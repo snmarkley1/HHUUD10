@@ -124,19 +124,6 @@ arcpy.conversion.FeatureClassToFeatureClass('airports_temp', path, 'airports_tem
 ## Dissolve
 arcpy.management.Dissolve("airports_temp1", output_gdb, "NAME;LOC_ID;STATE;ACT_DATE", None, "MULTI_PART", "DISSOLVE_LINES")
 
-## Remove extraneous columns
-#airports_temp1 = os.path.join(path, "airports_temp1")
-#arcpy.management.DeleteField(airports_temp1, "MNFC;LOC_ID_1")
-
-## Remove airport grounds
-#arcpy.management.EliminatePolygonPart("airports_temp1", os.path.join(path, "airports_temp2"), "PERCENT", "0 SquareMeters", 50, "CONTAINED_ONLY")  # absorbs polygon parts w/in runways that are < 50% total area
-#arcpy.management.MakeFeatureLayer('airports_temp2', 'airports_temp3', "FEATTYPE = 'Airport runway' AND STATE IS NOT NULL")  # also remove NULL values
-
-## Create buffer of 100m & keep only continental US & save to GDB
-#arcpy.analysis.Buffer("airports_temp3", os.path.join(path, "airports_buff100_temp"), "100 Meters", "FULL", "ROUND", "LIST", "NAME;LOC_ID;STATE;ACT_DATE", "PLANAR")
-#arcpy.management.MakeFeatureLayer("airports_buff100_temp", "airports_buff100", "STATE <> ' '")
-#arcpy.conversion.FeatureClassToGeodatabase("airports_buff100", output_gdb)
-
 # remove airport_temp shapefiles from layout
 for m in aprx.listMaps():
     for lyr in m.listLayers("airports*"):
@@ -208,25 +195,8 @@ for m in aprx.listMaps():
 ## Industrial Areas --> Remove
 ##---------------------------------------------------------------------------------------------
 
-
-## Identify overlaps
-#arcpy.management.MakeFeatureLayer(os.path.join(output_gdb, "t10"), "t10", "hu90 > 1")
-#arcpy.management.AddField('t10', 'sqmi', "DOUBLE")
-#arcpy.management.CalculateField('t10', 'sqmi', "!Shape.Area@SQUAREMILES!", 'PYTHON3')
-#arcpy.analysis.Intersect('industrial_areas_temp;t10', 'ia_int', 'NO_FID')
-
-#arcpy.management.AddField('ia_int', 'sqmi_int', "DOUBLE")
-#arcpy.management.CalculateField('ia_int', 'sqmi_int', "!Shape.Area@SQUAREMILES!", 'PYTHON3')
-#arcpy.management.AddField('ia_int', 'pcover', "DOUBLE")
-#arcpy.management.CalculateField('ia_int', 'pcover', "!sqmi_int! / !sqmi!", 'PYTHON3')
-
-## TRACTS w/ > 95% coverage (G0600370532400, G2600990982200)
-#arcpy.management.MakeFeatureLayer(os.path.join(output_gdb, 't10'), 't10_indust', "GISJOIN = 'G0600370532400' OR GISJOIN = 'G2600990982200'")
-#arcpy.conversion.FeatureClassToGeodatabase('t10_indust', output_gdb)
-
 ## Save out industrial areas as they are & rename
 arcpy.conversion.FeatureClassToFeatureClass("industrial_areas_temp", output_gdb, "industrial_areas")
-
 
 ## Clear workspace
 for m in aprx.listMaps():

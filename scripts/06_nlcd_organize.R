@@ -17,6 +17,11 @@ getwd()  # D:/HIST_HU_URB
 #########################################################
 
 ## Read in 2001, 2011 NLCD data from NHGIS 
+
+##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
+##!!! NOTE: Users need to download these files manually as zip files w/ these names !!##
+##!!! Instructrions are in the "table" folder's README file !!!!!!!!!!!!!!!!!!!!!!!!!!##
+##!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!##
 nlcd_import <- ipumsr::read_nhgis("tables/us_tract_2010_nlcd_timevariesbycolumn.zip", data_layer = contains("nlcd.csv"))
 
 ## Organize Data

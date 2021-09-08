@@ -48,21 +48,6 @@ for p in polygons:
   arcpy.management.AddField(p, "sqmi", "DOUBLE")  # add field
   arcpy.management.CalculateField(p, "sqmi", "!Shape.Area@SQUAREMILES!", "PYTHON3")  # calculate geometry (sq. mi.)
   
-## Add dissolve column JOIN_T
-#for bg in bg_target_zones:
-#  arcpy.management.AddField(bg, "JOIN_T", "TEXT")  # add TRACT join field
-#  arcpy.management.CalculateField(bg, "JOIN_T", "!GISJOIN![:-1]", "PYTHON3")  # create JOIN_T field by shaving off last # in BG ID
-
-## Do dissolve of BGs into Tracts (needs to be separated from above loop or ArcGIS Pro spits an error)
-#for bg in bg_target_zones:
-#  output = bg.replace("bg", "t")  # change names from bg90 to t90
-#  arcpy.management.Dissolve(bg, output, "JOIN_T", "hu40 SUM;hu50 SUM;hu60 SUM;hu70 SUM;hu80 SUM;hu90 SUM;sqmi SUM", "MULTI_PART", "DISSOLVE_LINES")  # Dissolve & sum HU counts + sqmi
-
-## Clear Layers from Display
-#for m in aprx.listMaps():
-#    for lyr in m.listLayers("*das*"):
-#        m.removeLayer(lyr)
-        
 
 ############################################################
 ## Do INTERSECTIONS                                       ##
