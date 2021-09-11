@@ -17,7 +17,7 @@ Subcounty housing unit counts are important for studying geo-historical patterns
 The final data product, HHUUD10, is available at the Open Science Framework [https://osf.io/fzv5e/](https://osf.io/fzv5e/). It includes an Esri Shapefile and identical GeoJSON file, as well as CSVs in long and wide formats.
 
 # Codebook
-The codebook for the long csv file is as follows:
+The codebook for the long CSV file is as follows:
 
 - `STATE` - Refers to each census tract's state abbreviation,
 - `COUNTY` - Refers to each tract's county name.
@@ -32,3 +32,8 @@ The codebook for the long csv file is as follows:
 - `UY1` - Urbanization year according to when a tract surpassed 200 HU / SQMI in its dasymetrically refined area.
 - `UY2` - Same as UY1, except urbanized non-residential areas identified by the pdev variable and tract adjacency are included.
 
+# Correspondence
+For any issues with these scripts, please create an issue.
+
+## Licence
+The data collected and presented is licensed under the [Creative Commons Attribution 3.0 license](http://creativecommons.org/licenses/by/3.0/us/deed.en_US), and the underlying code used to format, analyze and display that content is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php).
