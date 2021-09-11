@@ -10,10 +10,10 @@ Data housed in this folder are produced either manually or from our adaptations 
 - `urb_renewal_tracts.dbf` - contains the 1,990 tracts that intersect with one of the over 700 urban renewal projects recorded by the Digital Scholarship Lab's [Renewing Inequality](https://dsl.richmond.edu/panorama/renewal/#view=0/0/1&viz=cartogram) project. The data columns include a unique tract identifier (`GISJOIN`) and the percent of the tract's area overlapped by an urban renewal project (`p_urb_ren`).
 
 # Further Instructions
-In order for the scripts to run properly, users *must* manually download two zipped files from the NHGIS. These include a *1990-block-group-part-to-2010-block-group crosswalk* file and their *NLCD environmental summaries* file, which are not yet available through their API. Users should click the links below to download these zip files. To do so, they will need to create a [free account with the NHGIS](https://uma.pop.umn.edu/nhgis/user/new). Users will then need to save these files, keeping their names as they are, in this folder.
+In order for the scripts to run properly, users *must* manually download two zipped files from the NHGIS. These include a *1990-block-group-part-to-2010-block-group crosswalk* file and their *2010 NLCD environmental summaries (time varies by column)* file, which are not yet available through their API. Users should click the links below to download these zip files. To do so, they will need to create a [free account with the NHGIS](https://uma.pop.umn.edu/nhgis/user/new). Users will then need to save these files, keeping their names as they are, in this folder.
  into this folder, keeping the names the same:
 
 - [`nhgis_bgp1990_bg2010.zip`](https://data2.nhgis.org/crosswalks/nhgis_bgp1990_bg2010.zip) - 1990-block-group-part-to-2010-block-group crosswalk
 
-- [`us_tract_2010_nlcd_timevariesbycolumn.zip`](https://data2.nhgis.org/environmental/us_tract_2010_nlcd_timevariesbycolumn.zip) - NLCD environmental summaries
+- [`us_tract_2010_nlcd_timevariesbycolumn.zip`](https://data2.nhgis.org/environmental/us_tract_2010_nlcd_timevariesbycolumn.zip) - 2010 NLCD environmental summaries (time varies by column)
 
