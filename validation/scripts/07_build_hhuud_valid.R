@@ -105,7 +105,7 @@ df_uso <- uso_import %>%
 ###############################################################################
 
 ##------------------------------------------------------------
-## LOAD YSB 1990 for HAMMER METHOD
+## LOAD YSB 1990
 ##------------------------------------------------------------
 ysb90 <- sf::st_read(  # USO: Uncorrected Sparse override --> really ysb10
   dsn = "gis_files/database1.gdb",
@@ -206,7 +206,7 @@ counties_long <- read_csv("D:/HIST_HU_URB/tables/county_tracts.csv") %>%
 ## CORRECT MR ESTIMATES w/ PROPORTIONAL ALLOCATION
 ##-------------------------------------------------------------------
 
-dr_cmr <- mr_join %>%
+dr_cmr_prep <- mr_join %>%
   # join mr_join w/ county data for prop. alloc.
   full_join(counties_long, by = c("GISJOIN", "yr")) %>%
   # organize
@@ -251,6 +251,14 @@ t10 <- st_read(
     values_to = "ham"
   ) %>%
   mutate(yr = ifelse(yr == "hm_st00", 2000, 1990)) %>%
+  distinct() %>%
+  arrange(GISJOIN, yr) %>%
+  print()
+
+
+## add in these hammer method data
+dr_cmr <- dr_cmr_prep %>%
+  left_join(t10, by = c("GISJOIN", "yr")) %>%
   print()
 
 
@@ -261,7 +269,7 @@ dr_cmr %>%
 
 
 ## Clean up
-rm(mr_import, mr_join, uso_import, temp, temp1, counties_long, county_tracts, counties, county_1990, county_census, county_census00, states, missing_co)
+rm(dr_cmr_prep, mr_import, mr_join, uso_import, temp, temp1, counties_long, county_tracts, counties, county_1990, county_census, county_census00, states, missing_co)
 
 
 ##############################################################################
@@ -585,7 +593,7 @@ hu4080_prep <- dr_cmr %>%  # MAX. REABS. & SPARSE
   # change col names
   rename(
     hu_cmr = hu_mr2,
-    hu_ham = hu_ysb2
+    hu_ham = ham
   ) %>%
   # Name methods
   mutate(
