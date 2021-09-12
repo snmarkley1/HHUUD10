@@ -42,7 +42,7 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 - `08_sparse_tracts.py` - identifies and organizes sparsely populated tracts.
 
 - `09_arcgis_online_shp.py` - imports shapefiles from ArcGIS Online. Users should set up their [ArcGIS Online account](https://doc.arcgis.com/en/arcgis-online/get-started/create-account.htm) when they obtain their user license.
-  - `Line 166` - The erase function here does not work properly here due to an unsolved topology error. Users may need to conduct the Erase function manually, entering the inputs listed in `Line 166` into the Erase tool in the Geoprocessing window.
+  - *Line 166* - The erase function here does not work properly here due to an unsolved topology error. Users may need to conduct the Erase function manually, entering the inputs listed in *Line 166* into the Erase tool in the Geoprocessing window.
 
 - `10_dasymetric_zones.py` - creates the dasymetric layers for each decade in the study period, 1940 - 1980.
 
