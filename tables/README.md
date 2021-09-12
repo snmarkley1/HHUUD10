@@ -7,7 +7,7 @@ Data housed in this folder are produced either manually or from our adaptations 
 
 - `t2010_2019_xwalk.csv` - contains the NHGIS unique identifiers (`GISJOIN10`, `GISJOIN19`) for the 24 tracts in the continental U.S. that changed FIPS codes between 2010 and 2019.
 
-- `urb_renewal_tracts.dbf` - contains the 1,990 tracts that intersect one or more of the hundreds of urban renewal projects recorded by the Digital Scholarship Lab's [Renewing Inequality](https://dsl.richmond.edu/panorama/renewal/#view=0/0/1&viz=cartogram) project. The data columns include a unique tract identifier (`GISJOIN`) and the percent of the tract's area overlapped by an urban renewal project (`p_urb_ren`).
+- `urb_renewal_tracts.dbf` - contains information for the 1,990 tracts that intersect one or more of the hundreds of urban renewal projects recorded by the Digital Scholarship Lab's [Renewing Inequality](https://dsl.richmond.edu/panorama/renewal/#view=0/0/1&viz=cartogram) project. The data columns include a unique tract identifier (`GISJOIN`) and the percent of the tract's area overlapped by an urban renewal project (`p_urb_ren`).
 
 # Further Instructions
 For the scripts to run properly, users *must* manually download two zipped files from the NHGIS. These include a *1990-block-group-part-to-2010-block-group crosswalk* file and their *2010 NLCD environmental summaries (time varies by column)* file, which are not yet available through their API. Users should click the links below to download these zip files. To do so, they will need to create a [free account with the NHGIS](https://uma.pop.umn.edu/nhgis/user/new). Users will then need to save these files, keeping their names as they are, in this folder.
