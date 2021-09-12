@@ -11,7 +11,7 @@
 rm(list = ls())  # clear environment
 options(scipen = 999) 
 options(digits = 6)
-#setwd("D:/HIST_HU_URB")  # change if desired
+#setwd("D:/HHUUD10)  # change if desired
 
 ## Load or install packages
 packages <- function(x) {
