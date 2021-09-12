@@ -70,6 +70,6 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 
 - `20_create_final_shp.py` - creates final shapefile and GeoJSON file located at [Open Science Framework](https://osf.io/fzv5e/).
 
-- `21_tract_spread_graph.R` - creates **Figure 3** in the [Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940-2019](https://osf.io/fzv5e/).
+- `21_tract_spread_graph.R` - creates **Figure 3** in [Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940-2019](https://osf.io/fzv5e/).
   - `Line 23` -Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
   - `Lines 84, 177` - Must wait approximately 2 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
