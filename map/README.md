@@ -1,0 +1,2 @@
+# Organization
+This folder contains the elements of the ArcGIS Pro project (.aprx) where the Python code should be run. Users must have an [Esri User License](https://pro.arcgis.com/en/pro-app/latest/get-started/start-arcgis-pro-with-a-named-user-license.htm) to install ArcGIS Pro on their computers and run this code. The coordinate system should be set to "USA Contiguous Albers Equal Area Conic" (ESRI: 102003). Note that the `map.gdb` is not used for this project.
