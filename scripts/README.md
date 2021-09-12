@@ -9,7 +9,7 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 - All scripts are run with the assumption that users have cloned the repo into a folder called "HHUUD10".
 - The Python scripts are written as if users are running them in an external hard drive located in the `D:/` drive. Users may change this location within the scripts if they prefer. However, we recommend cloning the repo and running all code in an external hard drive with at least half a terabyte of memory.
 
-## Script-by-Script Descrition and Instructions
+## Script-by-Script Description and Instructions
 `00_preample.R` - is a simple R script that sets up the workspace and loads the libraries used in the subsequent R scripts.
 
 `01_pull_in_shapefiles.R` - pulls in tract and block group shapefiles from the NHGIS API.
@@ -62,4 +62,14 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 
 `16_neighbors_organize.R` - organizes the neighbor file.
 
-`
+`17_build_hhuud10.R` - builds HHUUD10's housing unit estimates.
+
+`18_urbanization.R` - builds HHUUD10's urbanization estimates.
+
+`19_finalize.R` - finalizes HHUUD10 tables and exports them to the output folder located at [Open Science Framework](https://osf.io/fzv5e/).
+
+`20_create_final_shp.py` - creates final shapefile and GeoJSON file located at [Open Science Framework](https://osf.io/fzv5e/).
+
+`21_tract_spread_graph.R` - creates **Figure 3** in the [Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940-2019](https://osf.io/fzv5e/).
+  - `Line 23` -Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
+  - `Lines 84, 177` - Must wait approximately 2 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
