@@ -1,8 +1,7 @@
 #########################################################################
 #########################################################################
 ###                                                                   ###
-###        PULL in HISTORICAL HOUSING UNIT (1990-2019) AND            ###
-###         YEAR STRUCTURE BUILT (YSB) TABLES (1940-1980)             ###
+###               PULL in Validation Data (1990-2019)                 ###
 ###                                                                   ###
 #########################################################################
 #########################################################################
@@ -11,20 +10,20 @@
 source("scripts/00_preamble.R")
 
 ## Check Workspace
-getwd()  # D:/validation
+getwd()  # D:/HHUUD10/validation
 
 ## Create temp folder
 dir.create("temp")
+
+## Set up Census key: https://api.census.gov/data/key_signup.html
+census_api_key("<YOUR KEY HERE>", overwrite = TRUE, install = TRUE)
 
 
 #########################################################
 ## SET API KEY and EXPLORE NHGIS SHAPEFILES            ##
 #########################################################
 
-### NHGIS: https://www.nhgis.org/
-
-## API KEY
-# Set personalized API key:  https://account.ipums.org/api_keys
+## # Set personalized NHGIS API key:  https://account.ipums.org/api_keys
 my_ipums_key <- "<YOUR KEY HERE>"
 
 

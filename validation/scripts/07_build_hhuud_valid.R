@@ -188,7 +188,7 @@ missing_co <- data.frame(
 
 
 ## Add in tract data
-counties_long <- read_csv("D:/HIST_HU_URB/tables/county_tracts.csv") %>%
+counties_long <- read_csv("D:/HHUUD10/tables/county_tracts.csv") %>%
   mutate(
     CO_CALC = JOIN_CO,  # includes aggregated counties (border changes)
     #CO_JOIN = substr(GISJOIN, 1, 8)  # for joining

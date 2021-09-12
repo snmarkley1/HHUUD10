@@ -17,7 +17,7 @@ import arcpy, os, re  # need ArcGIS license
 from arcpy import env
 
 ## Set base folder
-base = "D:/validation"
+base = "D:/HHUUD10/validation"
 
 # set output gdb
 output_gdb = os.path.join(base, "gis_files", "database1.gdb")

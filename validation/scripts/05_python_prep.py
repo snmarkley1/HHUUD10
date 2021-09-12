@@ -17,7 +17,7 @@ import arcpy, os, re  # need ArcGIS license
 from arcpy import env
 
 ## Set base folder as workspace
-base = "D:/validation"
+base = "D:/HHUUD10/validation"
 env.workspace = os.path.join(base, "gis_files")
 
 
@@ -88,7 +88,7 @@ for i in new_names:
 ##################################################
 
 ## Set folder to get old dasym files
-old_gdb = "D:/HIST_HU_URB/gis_files/set_aside.gdb"
+old_gdb = "D:/HHUUD10/gis_files/set_aside.gdb"
 
 # get needed dasym layers and add to display
 dasym_layers = [os.path.join(old_gdb, "golf_airport90"), os.path.join(old_gdb, "golf_airport00"), os.path.join(old_gdb, "golf_airport10"),
@@ -241,8 +241,8 @@ for m in aprx.listMaps():
 ##################################################       
 
 ## Create output GDB
-arcpy.management.CreateFileGDB("D:/validation/gis_files", "rasters.gdb")
-outpath = "D:/validation/gis_files/rasters.gdb"
+arcpy.management.CreateFileGDB("D:/HHUUD10/validation/gis_files", "rasters.gdb")
+outpath = "D:/HHUUD10/validation/gis_files/rasters.gdb"
 
 
 ##------------------------

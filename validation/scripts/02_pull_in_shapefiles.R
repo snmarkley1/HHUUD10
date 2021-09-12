@@ -10,7 +10,7 @@
 source("scripts/00_preamble.R")
 
 ## Check Workspace
-getwd()  # D:/validation
+getwd()  # D:/HHUUD10/validation
 
 ##################################################
 ## SET API KEY and EXPLORE NHGIS SHAPEFILES     ##
@@ -64,8 +64,6 @@ des_df$download_links  # take a look at the download links
 ## Download extract to zip file
 ## !! MAKE SURE R is up-to-date !! ##
 ## !! DOES NOT WORK on EVERY MACHINE: BEST PERFORMANCE on DESKTOPS w/ GOOD SPECS !! ##
-
-# Do download
 zip_file <- "temp/NHGIS_shape.zip"
 download.file(
    url = des_df$download_links$gis_data,
