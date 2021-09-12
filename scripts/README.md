@@ -5,7 +5,7 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 
 - We recommend users run the Python scripts within ArcGIS Pro 2.7 or later, except for script `14_maximum_reabsorption_pt3.py`, which should be run in ArcGIS Desktop 10.7 or later. 
 - Each script name is led by a number, which represents the order in which the scripts should be run. 
-- Users should run all of this code line-by-line rather than all at once. This is necessary for the code to run successfully because the API data pulls take time to process, and there are some quirks with ArcGIS Pro that may need to be handled manually. 
+- Users should run this code line-by-line rather than all at once. This is necessary for the code to run successfully because the API data pulls take time to process, and there are some quirks with ArcGIS Pro that may need to be handled manually. 
 - All scripts are run with the assumption that users have cloned the repo into a folder called "HHUUD10".
 - The Python scripts are written as if users are running them in an external hard drive located in the `D:/` drive. Users may change this location within the scripts if they prefer. However, we recommend cloning the repo and running all code in an external hard drive with at least half a terabyte of memory.
 
