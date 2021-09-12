@@ -10,7 +10,7 @@
 source("scripts/00_preamble.R")
 
 ## Check Workspace
-getwd()  # D:/HIST_HU_URB
+getwd()  # D:/HHUUD10
 
 #########################################################
 ## IMPORT 2001, 2011 DATA from NHGIS                   ##

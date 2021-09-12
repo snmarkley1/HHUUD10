@@ -19,7 +19,7 @@ from arcpy import env
 import os, glob   # for downloading, grabbing files
 
 ## Set workspace
-base = "D:/HIST_HU_URB"  # GitHub Repo Folder in External Hard Drive
+base = "D:/HHUUD10"  # GitHub Repo Folder in External Hard Drive
 env.workspace = base
 
 ## Set preferences

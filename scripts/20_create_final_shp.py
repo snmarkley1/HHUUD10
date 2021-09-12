@@ -15,7 +15,7 @@ import arcpy, os
 from arcpy import env
 
 # SET BASE
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 
 # SET ENV.WORKSPACE
 env.workspace = os.path.join(base, "gis_files", "database1.gdb")
@@ -55,11 +55,6 @@ arcpy.conversion.FeatureClassToFeatureClass("t10_empty", output_gdb, "HHUUD10")
 arcpy.management.DeleteField("HHUUD10", "GISJOIN;OID_1")
 
 arcpy.management.RemoveJoin('t10_empty', 'HHUUD')
-
-## Do join and conversion for HAMMER & clean up
-#arcpy.management.AddJoin("t10_empty", "GISJOIN", hammer, "GISJOIN10")
-#arcpy.conversion.FeatureClassToFeatureClass("t10_empty", env.workspace, "HAMMER")
-#arcpy.management.DeleteField("HAMMER", "GISJOIN;OID_1")
 
 
 ###############################################################################

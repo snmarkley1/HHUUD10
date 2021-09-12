@@ -18,7 +18,7 @@ import arcpy, os, re  # need ArcGIS license
 from arcpy import env
 
 ## Set base folder
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 
 ## Set workspace
 env.workspace = os.path.join(base, "gis_files/database1.gdb")

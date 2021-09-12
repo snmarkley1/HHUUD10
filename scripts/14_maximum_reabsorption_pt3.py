@@ -20,7 +20,7 @@ import arcpy, os, re  # need ArcGIS license
 from arcpy import env
 
 ## Set base folder
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 
 ## Set workspace
 env.workspace = os.path.join(base, "gis_files/database1.gdb")
@@ -31,7 +31,7 @@ env.extent = "MAXOF"  # for raster operations--output uses max. extent of inputs
 env.qualifiedFieldNames = False  # good for joins
 
 ## Create output GDB
-env.workspace = "D:/HIST_HU_URB/gis_files/rasters.gdb"  # set workspace to rasters gdb
+env.workspace = "D:/HHUUD10/gis_files/rasters.gdb"  # set workspace to rasters gdb
 
 
 #######################################################################

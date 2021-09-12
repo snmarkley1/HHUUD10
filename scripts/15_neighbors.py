@@ -16,7 +16,7 @@ import arcpy, os
 from arcpy import env
 
 # SET BASE
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 
 # SET ENV.WORKSPACE
 env.workspace = os.path.join(base, "gis_files", "database1.gdb")

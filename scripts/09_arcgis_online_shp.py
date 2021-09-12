@@ -20,7 +20,7 @@ from arcgis.gis import GIS  # import ArcGIS Online
 import os, zipfile  # for file paths
 
 ## Set workspace
-env.workspace = "D:/HIST_HU_URB"
+env.workspace = "D:/HHUUD10"
 
 ## Set preferences
 env.outputCoordinateSystem = arcpy.SpatialReference("USA Contiguous Albers Equal Area Conic")  # coordinate system in use

@@ -12,7 +12,7 @@
 source("scripts/00_preamble.R")
 
 ## Check Workspace
-getwd()  # D:/HIST_HU_URB
+getwd()  # D:/HHUUD10
 
 ## Create temp folder
 dir.create("temp")
@@ -106,7 +106,10 @@ des_df$download_links
 # Destination file
 zip_file <- "temp/NHGIS_tables.zip"
 
-# Download extract to destination file
+
+## Download extract to zip file
+## !! MAKE SURE R is up-to-date !! ##
+## !! DOES NOT WORK on EVERY MACHINE: BEST PERFORMANCE on DESKTOPS w/ GOOD SPECS !! ##
 download.file(
   url = des_df$download_links$table_data, 
   destfile = zip_file, 

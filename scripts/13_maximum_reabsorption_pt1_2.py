@@ -17,7 +17,7 @@ import arcpy, os, re  # need ArcGIS license
 from arcpy import env
 
 ## Set base folder
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 
 ## Set workspace
 env.workspace = os.path.join(base, "gis_files/database1.gdb")
@@ -36,8 +36,8 @@ aprx = arcpy.mp.ArcGISProject("CURRENT")  # project
 ############################################################
 
 ## Create output GDB
-arcpy.management.CreateFileGDB("D:/HIST_HU_URB/gis_files", "rasters.gdb")
-outpath = "D:/HIST_HU_URB/gis_files/rasters.gdb"
+arcpy.management.CreateFileGDB("D:/HHUUD10/gis_files", "rasters.gdb")
+outpath = "D:/HHUUD10/gis_files/rasters.gdb"
 
 
 ##------------------------
@@ -192,7 +192,7 @@ for m in aprx.listMaps():
 ############################################################
 
 ## Create output GDB
-env.workspace = "D:/HIST_HU_URB/gis_files/rasters.gdb"  # set workspace to rasters gdb
+env.workspace = "D:/HHUUD10/gis_files/rasters.gdb"  # set workspace to rasters gdb
 
 ## Run Decade-by-Decade---each takes ~1.5-3 hours (need Spatial Analyst Extension)
 

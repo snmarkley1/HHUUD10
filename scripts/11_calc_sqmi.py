@@ -18,7 +18,7 @@ import arcpy, os, re  # need ArcGIS license
 from arcpy import env
 
 ## Set base
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 
 ## Set preferences
 env.outputCoordinateSystem = arcpy.SpatialReference("USA Contiguous Albers Equal Area Conic")  # coordinate system in use

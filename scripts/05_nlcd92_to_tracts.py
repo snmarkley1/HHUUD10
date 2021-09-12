@@ -20,7 +20,7 @@ import os, zipfile, urllib   # for downloading, unzipping files
 from urllib import request
 
 ## Set workspace
-base = "D:/HIST_HU_URB"
+base = "D:/HHUUD10"
 env.workspace = base
 
 ## Set preferences

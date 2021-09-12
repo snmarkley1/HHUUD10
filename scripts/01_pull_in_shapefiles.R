@@ -8,7 +8,7 @@
 #########################################################################
 
 ## Check working directory
-getwd()  # should be ~/HIST_HU_URB
+getwd()  # should be D:/HHUUD10
 
 ## PREPARE WORKSPACE
 source("scripts/00_preamble.R")

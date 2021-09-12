@@ -5,9 +5,6 @@
 ## Prepare workspace
 source("scripts/00_preamble.R")
 
-
-## Get data from NHGIS API
-
 ## Create temp folder
 dir.create("temp")
 
@@ -122,8 +119,6 @@ for (i in unique(seq(1940, 1990, 10))) {
   
   tract_pop <- bind_rows(tract_pop, temp)
   
-  #k <- str_sub(i, 3, 4) # give 2-digit year for data frame name
-  #assign(paste0("temp", k), temp) # write out new data frames
 }
 
 tract_pop
@@ -217,8 +212,6 @@ for (i in unique(seq(1940, 1990, 10))) {
   
   us_pop <- bind_rows(us_pop, temp)
   
-  #k <- str_sub(i, 3, 4) # give 2-digit year for data frame name
-  #assign(paste0("temp", k), temp) # write out new data frames
 }
 
 us_pop
@@ -230,7 +223,6 @@ us_pop
 
 pop <- left_join(tract_pop, us_pop, by = "YEAR") %>%
   mutate(ptract = pop / us_pop * 100) %>%
-  #bind_rows(data.frame(YEAR = 1990, pop = 1, us_pop = 1, ptract = 100)) %>%
   print()
 
 
@@ -238,7 +230,7 @@ pop <- left_join(tract_pop, us_pop, by = "YEAR") %>%
 ##  Get areas                                            ##
 ###########################################################
 
-gdb <- "D:/HIST_HU_URB/gis_files/database1.gdb"
+gdb <- "D:/HHUUD10/gis_files/database1.gdb"
 
 areas <- NULL
 for(i in unique(c(seq(40, 80, 10), 10))){

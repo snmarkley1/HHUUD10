@@ -2,7 +2,6 @@
 #########################################################################
 ###                                                                   ###
 ###     PULL in CROSSWALK FILES for 1990 BG HU Data in 2010 BGs       ###
-###         YEAR STRUCTURE BUILT (YSB) TABLES (1940-1980)             ###
 ###                                                                   ###
 #########################################################################
 #########################################################################
@@ -11,7 +10,7 @@
 source("scripts/00_preamble.R")
 
 ## Check Workspace
-getwd()  # D:/HIST_HU_URB
+getwd()  # D:/HHUUD10
 
 ## Create temp folder
 dir.create("temp")
