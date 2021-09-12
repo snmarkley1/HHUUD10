@@ -18,26 +18,26 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
   - *Lines 83, 147, 204* - R's `download.file()` function can only handle small-to-medium size data downloads. This call will not work on every machine and will probably fail on most laptops. For best results, we recommend running this code on a desktop with good specs.
 
 - `02_pull_in_tables.R` - pulls in housing unit (HU) and year structure built (YSB) data from the NHGIS API.
-  - `Line 29` - Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
-  - `Line 96` -  Must wait approximately 3 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
-  -  `Line 113` - For best results, we recommend running R's `download.file()` function on a desktop with good specs.
+  - *Line 29* - Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
+  - *Line 96* -  Must wait approximately 3 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
+  -  *Line 113* - For best results, we recommend running R's `download.file()` function on a desktop with good specs.
 
 - `03_xwalk90_10.R` - pulls in NHGIS's crosswalk files to put 1990 block group HU data in 2010 block group shapes.
-  - `Line 26` - Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
-  - `Line 61` - Must wait approximately 90-120 seconds for the extract to be prepared. NHGIS will send an email when the data is ready for download.
-  -  `Line 75` - For best results, we recommend running R's `download.file()` function on a desktop with good specs.
-  -  `Line 110` - Users need to have already downloaded the [`nhgis_bgp1990_bg2010.zip`](https://data2.nhgis.org/crosswalks/nhgis_bgp1990_bg2010.zip) file into the `tables` folder.
+  - *Line 26* - Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
+  - *Line 61* - Must wait approximately 90-120 seconds for the extract to be prepared. NHGIS will send an email when the data is ready for download.
+  -  *Line 75* - For best results, we recommend running R's `download.file()` function on a desktop with good specs.
+  -  *Line 110* - Users need to have already downloaded the [`nhgis_bgp1990_bg2010.zip`](https://data2.nhgis.org/crosswalks/nhgis_bgp1990_bg2010.zip) file into the `tables` folder.
 
 - `04_organizing_tract_shp.py` - organizes data pulled in by previous scripts into appropriate folders and geodatabases to be processed via Python in ArcGIS Pro.
 
 - `05_nlcd92_to_tracts.py` - assigns [1992 NLCDe](https://water.usgs.gov/GIS/metadata/usgswrd/XML/nlcde92.xml#stdorder) categories to 2010 tract geographies.
-  - `Line 56` - This block of code spit back errors in our first run but worked on the second run.
+  - *Line 56* - This block of code spit back errors in our first run but worked on the second run.
 
 - `06_nlcd_organize.R` - organizes the NLCD data produced in script 05 and gathered from the NHGIS's [environmental summaries files](https://www.nhgis.org/user-resources/environmental-summaries).
-  - `Line 25` - Users need to have already downloaded the [`us_tract_2010_nlcd_timevariesbycolumn.zip`](https://data2.nhgis.org/environmental/us_tract_2010_nlcd_timevariesbycolumn.zip) file into the `tables` folder.
+  - *Line 25* - Users need to have already downloaded the [`us_tract_2010_nlcd_timevariesbycolumn.zip`](https://data2.nhgis.org/environmental/us_tract_2010_nlcd_timevariesbycolumn.zip) file into the `tables` folder.
 
 - `07_pull_in_airport_data.R` - import activation date information for U.S. airports from the [Federal Aviation Administration (FAA)](https://www.faa.gov/airports/airport_safety/airportdata_5010/).
-  - `Line 21` - This data was imported successfully on June 28, 2021 and was still operative by September 13, 2021. If this link is broken, users may [create an issue](https://github.com/[removed]/HHUUD10/issues).
+  - *Line 21* - This data was imported successfully on June 28, 2021 and was still operative by September 13, 2021. If this link is broken, users may [create an issue](https://github.com/[removed]/HHUUD10/issues).
 
 - `08_sparse_tracts.py` - identifies and organizes sparsely populated tracts.
 
@@ -71,8 +71,8 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 - `20_create_final_shp.py` - creates final shapefile and GeoJSON file located at [Open Science Framework](https://osf.io/fzv5e/).
 
 - `21_tract_spread_graph.R` - creates **Figure 3** in [Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940-2019](https://osf.io/fzv5e/).
-  - `Line 23` -Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
-  - `Lines 84, 177` - Must wait approximately 2 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
+  - *Line 23* -Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
+  - *Lines 84, 177* - Must wait approximately 2 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
 
 # Correspondence
 For any issues with these scripts, please [create an issue](https://github.com/[removed]/HHUUD10/issues).
