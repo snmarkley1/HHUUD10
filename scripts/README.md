@@ -13,9 +13,9 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 - `00_preample.R` - is a simple R script that sets up the workspace and loads the libraries used in the subsequent R scripts.
 
 - `01_pull_in_shapefiles.R` - pulls in tract and block group shapefiles from the NHGIS API.
-  - `Line 34` - Users must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
-  - `Lines 67, 133, 190` - After requesting their extract, users must wait approximately 30-60 seconds before it is prepared. NHGIS will send an email when the data is ready for download. If users do not wait, the code will not work.
-  - `Lines 83, 147, 204` - R's `download.file()` function can only handle small-to-medium size data downloads. This call will not work on every machine and will probably fail on most laptops. For best results, we recommend running this code on a desktop with good specs.
+  - *Line 34* - Users must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
+  - *Lines 67, 133, 190* - After requesting their extract, users must wait approximately 30-60 seconds before it is prepared. NHGIS will send an email when the data is ready for download. If users do not wait, the code will not work.
+  - *Lines 83, 147, 204* - R's `download.file()` function can only handle small-to-medium size data downloads. This call will not work on every machine and will probably fail on most laptops. For best results, we recommend running this code on a desktop with good specs.
 
 - `02_pull_in_tables.R` - pulls in housing unit (HU) and year structure built (YSB) data from the NHGIS API.
   - `Line 29` - Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
