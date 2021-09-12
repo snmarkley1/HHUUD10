@@ -73,3 +73,9 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 - `21_tract_spread_graph.R` - creates **Figure 3** in [Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940-2019](https://osf.io/fzv5e/).
   - `Line 23` -Must set up a free [API key](https://account.ipums.org/api_keys) through the NHGIS and insert it where the code says "\<YOUR KEY HERE\>".
   - `Lines 84, 177` - Must wait approximately 2 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
+
+# Correspondence
+For any issues with these scripts, please [create an issue](https://github.com/[removed]/HHUUD10/issues).
+
+## License
+The data collected and presented are licensed under the [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/), and the underlying code used to format, analyze, and display that content is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php).
