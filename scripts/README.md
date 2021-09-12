@@ -51,9 +51,15 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
 `12_intersections_aw_tdw.py` - performs the intersections needed for conducting areal weighting (AW) and target-density weighting (TDW).
   - Be advised that the processes herein will take several hours.
 
-`13_maximum_reabsorption_pt1_2` - conducts the first two steps of maximum reabsorption: rasterization and maximum calculations.
+`13_maximum_reabsorption_pt1_2.py` - conducts the first two steps of maximum reabsorption: rasterization and maximum calculations.
   - Be advised that the processes herein will take several hours.
 
-`14_maximum_reabsorption_pt3` - conducts third step of maximum reabsorption: zonal statistics.
-  - Run this code in ArcGIS Desktop 10.7+. ArcGIS Pro cannot handle the memory it takes to complete the data processing, whereas ArcMap can.
+`14_maximum_reabsorption_pt3.py` - conducts third step of maximum reabsorption: zonal statistics.
+  - Run this code in ArcGIS Desktop 10.7+. ArcGIS Pro cannot handle the data processing but ArcMap can.
   - Be advised that this process will take several hours.
+
+`15_neighbors.py` - generates a neighbor file for all tracts in the study area.
+
+`16_neighbors_organize.R` - organizes the neighbor file.
+
+`
