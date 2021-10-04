@@ -1,9 +1,9 @@
 # Introduction
 
-Here we provide code for HHUUD10 (Historical Housing and Urbanization Database 2010), located here: [**Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940–2019**](https://osf.io/fzv5e/)
+Here we provide code for HHUUD10 (Historical Housing and Urbanization Database 2010), located here: [**Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940–2019**](https://osf.io/fzv5e/?view_only=831b011968684d349a9d8571e39d2be7)
 
 ### Citation
-> [Authors] *Open Science Framework* (https://osf.io/fzv5e/) (YEAR ACCESSED).
+> [Authors] *Open Science Framework* (https://osf.io/fzv5e/?view_only=831b011968684d349a9d8571e39d2be7) (YEAR ACCESSED).
 
 # Abstract
 Subcounty housing unit counts are important for studying geo-historical patterns of (sub)urbanization, land-use change, and residential loss and gain. The most commonly used subcounty geographical unit for social research in the United States is the census tract. However, their changing geometries and historically incomplete coverage present significant obstacles for longitudinal analysis that existing datasets do not adequately address. Overcoming these barriers, we provide housing unit estimates in consistent 2010 tract boundaries for every census year from 1940 to 2010 plus 2019 for the entire continental US. Moreover, we develop an “urbanization year” indicator that denotes if and when tracts became “urbanized” during this timeframe. We produce these data by blending existing interpolation techniques with a novel procedure we call “maximum reabsorption”. Conducting out-of-sample validation, we find that our hybrid approach generally produces more reliable estimates than existing alternatives. The final dataset, Historical Housing Unit and Urbanization Database 2010 (HHUUD10), has myriad potential uses for research involving housing, population, and land-use change, as well as (sub)urbanization.
@@ -15,7 +15,7 @@ Subcounty housing unit counts are important for studying geo-historical patterns
 - `validation` - Scripts used to run the validation tests.
 
 # Data
-The final data product, HHUUD10, is available at the Open Science Framework [https://osf.io/fzv5e/](https://osf.io/fzv5e/). It includes an Esri Shapefile and identical GeoJSON file, as well as CSVs in long and wide formats.
+The final data product, HHUUD10, is available at the Open Science Framework [https://osf.io/fzv5e/?view_only=831b011968684d349a9d8571e39d2be7](https://osf.io/fzv5e/?view_only=831b011968684d349a9d8571e39d2be7). It includes an Esri Shapefile and identical GeoJSON file, as well as CSVs in long and wide formats.
 
 # Codebook
 The codebook for the long CSV file is as follows:
