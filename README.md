@@ -15,7 +15,7 @@ Subcounty housing unit counts are important for studying geo-historical patterns
 - `validation` - Scripts used to run the validation tests.
 
 # Data
-The final data product, HHUUD10, is available at the Open Science Framework [https://osf.io/fzv5e/?view_only=831b011968684d349a9d8571e39d2be7](https://osf.io/fzv5e/?view_only=831b011968684d349a9d8571e39d2be7). It includes an Esri Shapefile and identical GeoJSON file, as well as CSVs in long and wide formats.
+The final data product, HHUUD10, is available at the [Open Science Framework](https://doi.org/10.17605/OSF.IO/FZV5E). It includes an Esri Shapefile and identical GeoJSON file, as well as CSVs in long and wide formats.
 
 # Codebook
 The codebook for the long CSV file is as follows:
