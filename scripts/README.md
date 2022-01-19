@@ -37,7 +37,7 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
   - *Line 25* - Users need to have already downloaded the [`us_tract_2010_nlcd_timevariesbycolumn.zip`](https://data2.nhgis.org/environmental/us_tract_2010_nlcd_timevariesbycolumn.zip) file into the `tables` folder.
 
 - `07_pull_in_airport_data.R` - import activation date information for U.S. airports from the [Federal Aviation Administration (FAA)](https://adip.faa.gov/agis/public/#/airportSearch/advanced).
-  - This data was imported successfully on June 28, 2021. However, the data link has since been deactivated by the FAA. Accordingly, the original FAA data table used to generate HHUUD10 has been stored in the `tables` folder as `airports_yr.dbf`, and the code has been commented out. Additional code and instructions for importing and preparing the new FAA data is also provided and is also commented out.
+  - This data was imported successfully on June 28, 2021. However, the data link has since been deactivated by the FAA. Accordingly, the original FAA data table used to generate HHUUD10 has been stored in the `tables` folder as `airports_yr.dbf`, and the code has been commented out. Additional code and instructions for importing and preparing the new FAA data (also commented out) is also included in the script.
 
 - `08_sparse_tracts.py` - identifies and organizes sparsely populated tracts.
 
