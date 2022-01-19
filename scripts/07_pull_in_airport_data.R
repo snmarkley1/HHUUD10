@@ -70,7 +70,7 @@ airports_yr <- read.dbf("tables/airports_yr.dbf") %>%
 
 
 ## Import table
-airports_import <- read_csv("tables/faa_airport_data.csv") %>%
+airports_import <- read_csv("tables/faa_airport_data_new.csv") %>%
   print()
 
 
