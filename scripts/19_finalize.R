@@ -68,10 +68,10 @@ hhuud <- df %>%
 
 ## SAVE!!
 write.dbf(as.data.frame(hhuud), "output/HHUUD.dbf")  # dbf for shapefile
-write_csv(hhuud, "DATA_DOWNLOAD/HHUUD10.csv")  # csv
-write.dta(hhuud, "DATA_DOWNLOAD/HHUUD10.dta")  # dta (STATA)
-write_xpt(hhuud, "DATA_DOWNLOAD/HHUUD10.xpt")  # xpt (SAS)
-write_xpt(hhuud, "DATA_DOWNLOAD/HHUUD10.v8xpt") # v8xpt (SAS)
+write_csv(hhuud, "DATA_DOWNLOAD/HHUUD10_wide.csv")  # csv
+write.dta(hhuud, "DATA_DOWNLOAD/HHUUD10_wide.dta")  # dta (STATA)
+write_xpt(hhuud, "DATA_DOWNLOAD/HHUUD10_wide.xpt")  # xpt (SAS)
+write_xpt(hhuud, "DATA_DOWNLOAD/HHUUD10_wide.v8xpt") # v8xpt (SAS)
 
 
 ###############################################################################
