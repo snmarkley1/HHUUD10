@@ -13,6 +13,10 @@ source("scripts/00_preamble.R")
 ## Create DATA_DOWNLOAD folder
 dir.create("DATA_DOWNLOAD")
 
+## for exporting a SAS file
+packages(haven)
+
+
 ###############################################################################
 ##  STEP 1: LOAD & CLEAN DATA                                                ##
 ###############################################################################
@@ -63,8 +67,11 @@ hhuud <- df %>%
   print()
 
 ## SAVE!!
-write.dbf(as.data.frame(hhuud), "output/HHUUD.dbf")
-write_csv(hhuud, "DATA_DOWNLOAD/HHUUD10.csv")
+write.dbf(as.data.frame(hhuud), "output/HHUUD.dbf")  # dbf for shapefile
+write_csv(hhuud, "DATA_DOWNLOAD/HHUUD10.csv")  # csv
+write.dta(hhuud, "DATA_DOWNLOAD/HHUUD10.dta")  # dta (STATA)
+write_xpt(hhuud, "DATA_DOWNLOAD/HHUUD10.xpt")  # xpt (SAS)
+write_xpt(hhuud, "DATA_DOWNLOAD/HHUUD10.v8xpt") # v8xpt (SAS)
 
 
 ###############################################################################
@@ -98,7 +105,10 @@ hhuud_long <- hhuud %>%
   print()
 
 ## SAVE!!
-write_csv(hhuud_long, "DATA_DOWNLOAD/HHUUD10_long.csv")
+write_csv(hhuud_long, "DATA_DOWNLOAD/HHUUD10_long.csv")  # csv
+write.dta(hhuud_long, "DATA_DOWNLOAD/HHUUD10_long.dta")  # dta (STATA)
+write_xpt(hhuud_long, "DATA_DOWNLOAD/HHUUD10_long.xpt")  # xpt (SAS)
+write_xpt(hhuud_long, "DATA_DOWNLOAD/HHUUD10_long.v8xpt") # v8xpt (SAS)
 
 
 ###############################################################################
