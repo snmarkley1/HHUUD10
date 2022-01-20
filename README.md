@@ -6,7 +6,7 @@ Here we provide code for HHUUD10 (Historical Housing and Urbanization Database 2
 > Markley, S., Holloway, S., Hafley, S., & Hauer, M. Housing Unit and Urbanization Estimates for the Continental U.S. in Consistent Tract Boundaries, 1940–2019. (https://doi.org/10.17605/OSF.IO/FZV5E) (2022).
 
 <p style="text-align: center">
-  <img src="https://github.com/snmarkley1/snmarkley1.github.io/Projects/atl.gif" width="600" title="Urbanization in Metro Atlanta, 1940-2019"/>
+  <img src="https://raw.githubusercontent.com/snmarkley1/snmarkley1.github.io/master/Projects/atl.gif" width="600" title="Urbanization in Metro Atlanta, 1940-2019"/>
   <figcaption>Urbanization in Metro Atlanta by 2010 Census Tracts, 1940-2019</figcaption>
 </p>
 
