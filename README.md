@@ -10,7 +10,7 @@ Subcounty housing unit counts are important for studying geo-historical patterns
 
 <p style="text-align: center">
   <img src="https://raw.githubusercontent.com/snmarkley1/snmarkley1.github.io/master/Projects/atl.gif" width="600" title="Urbanization in Metro Atlanta, 1940-2019"/>
-  <figcaption>Urbanization in Metro Atlanta by 2010 Census Tracts, 1940-2019</figcaption>
+  <figcaption>Urbanization in Metro Atlanta by 2010 Census Tracts Using HHUUD10 Categories, 1940-2019</figcaption>
 </p>
 
 # Organization
