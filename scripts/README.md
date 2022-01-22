@@ -75,7 +75,7 @@ This folder contains the R and Python scripts used to create HHUUD10. Here, we l
   - *Lines 81, 174* - Must wait approximately 2 minutes for the extract to be prepared. NHGIS will send an email when the data is ready for download.
 
 # Correspondence
-For any issues with these scripts, please [create an issue](https://github.com/[removed]/HHUUD10/issues).
+For any issues with these scripts, please [create an issue](https://github.com/snmarkley1/HHUUD10/issues).
 
 ## License
 The data collected and presented are licensed under the [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/), and the underlying code used to format, analyze, and display that content is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php).
