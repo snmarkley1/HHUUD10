@@ -39,7 +39,7 @@ The codebook for the long CSV file is as follows:
 - `UY2` - Same as UY1, except urbanized non-residential areas identified by the pdev variable and tract adjacency are included.
 
 # Correspondence
-For any issues with these scripts, please [create an issue](https://github.com/snmarkley1/HIST_HU_URB/issues).
+If you encounter any problems with these scripts, please [create an issue](https://github.com/snmarkley1/HIST_HU_URB/issues). In addition, if you have local knowledge of a region and believe a housing unit estimate is dramatically off due to an estimation error, please report the tracts in question, including their 11-digit Tract ID, and a description of why you think the estimate is in error via the [same link](https://github.com/snmarkley1/HIST_HU_URB/issues). We may not be able to address all petitions in a timely manner, but we will do our best to update the dataset when convincing cases can be made.
 
 ## License
 The data collected and presented are licensed under the [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/), and the underlying code used to format, analyze, and display that content is licensed under the [MIT license](http://opensource.org/licenses/mit-license.php).
